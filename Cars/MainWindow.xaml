@@ -34,21 +34,31 @@
             </TabItem>
             <TabItem Header="Вывод">
                 <WrapPanel Orientation="Vertical">
-                    <RadioButton Content="Марка"/>
+                    <RadioButton x:Name="RBlabel" Content="Марка"/>
                     <TextBox x:Name="TBlabel"/>
-                    <RadioButton Content="Модель, больше n лет"/>
+                    <RadioButton x:Name="RBmodelAndYears" Content="Модель, больше n лет"/>
                     <TextBox x:Name="TBmodel"/>
                     <TextBox x:Name="TByears"/>
                     <Rectangle Height="200"/>
-                    <RadioButton Content="Год выпуска, цена больше чем"/>
+                    <RadioButton x:Name="RByearAndCost" Content="Год выпуска, цена больше чем"/>
                     <TextBox x:Name="TByear"/>
                     <TextBox x:Name="TBcost"/>
-                    <RadioButton Content="Все"/>
-                    <Button x:Name="Btnshow" Content="Показать" Margin="10"/>
+                    <RadioButton x:Name="RBall" Content="Все" IsChecked="True"/>
+                    <Button x:Name="Btnshow" Content="Показать" Margin="10" Click="Btnshow_Click"/>
                 </WrapPanel>
             </TabItem>
         </TabControl>
 
-        <DataGrid x:Name="DGcars" Grid.Row="1"/>
+        <DataGrid x:Name="DGcars" Grid.Row="1" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}"/>
+                <DataGridTextColumn Header="Марка" Binding="{Binding Path=label}"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding Path=model}"/>
+                <DataGridTextColumn Header="Год" Binding="{Binding Path=year}"/>
+                <DataGridTextColumn Header="Цвет" Binding="{Binding Path=color}"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Path=cost}"/>
+                <DataGridTextColumn Header="Рег. номер" Binding="{Binding Path=regNum}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

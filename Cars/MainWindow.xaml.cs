@@ -21,7 +21,7 @@ namespace Cars
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<Car> cars = new ObservableCollection<Car>();
+        public ObservableCollection<Car> cars = new ObservableCollection<Car>();
         public MainWindow()
         {
             InitializeComponent();
@@ -29,25 +29,56 @@ namespace Cars
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            cars.Add(new Car(TBNewID.Text, TBNewLabel.Text, TBNewModel.Text, TBNewYear.Text, TBNewColor.Text, TBNewCost.Text, TBNewRegNum.Text));
-            DGcars.ItemsSource = cars;
+            try
+            {
+                int newID = int.Parse(TBNewID.Text);
+                int newYear = int.Parse(TBNewYear.Text);
+                double newCost = double.Parse(TBNewCost.Text);
+                cars.Add(new Car()
+                {
+                    ID = newID,
+                    label = TBNewLabel.Text,
+                    model = TBNewModel.Text,
+                    year = newYear,
+                    color = TBNewColor.Text,
+                    cost = newCost,
+                    regNum = TBNewRegNum.Text
+                });
+                DGcars.ItemsSource = cars;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Неверные данные");
+            }
+        }
+
+        private void Btnshow_Click(object sender, RoutedEventArgs e)
+        {
+            int RBcheck = 0;
+            if ((bool)RBall.IsChecked) RBcheck = 0;
+            if ((bool)RBlabel.IsChecked) RBcheck = 1;
+            if ((bool)RBmodelAndYears.IsChecked) RBcheck = 2;
+            if ((bool)RByearAndCost.IsChecked) RBcheck = 3;
+
+            switch (RBcheck)
+            {
+                case 0:
+                    DGcars.ItemsSource = cars;
+                    break;
+                case 1:
+                    break;
+            }
         }
     }
     public class Car
     {
-        public int ID, year;
-        public double cost;
-        public string label, model, color, regNum;
+        public int ID { get; set; }
+        public string label { get; set; }
+        public string model { get; set; }
+        public int year { get; set; }
+        public string color { get; set; }
+        public double cost { get; set; }
+        public string regNum { get; set; }
 
-        public Car(string newID, string newLabel, string newModel, string newYear, string newColor, string newCost, string newRegNum)
-        {
-            ID = int.Parse(newID);
-            label = newLabel;
-            model = newModel;
-            year = int.Parse(newYear);
-            color = newColor;
-            cost = double.Parse(newCost);
-            regNum = newRegNum;
-        }
     }
 }
