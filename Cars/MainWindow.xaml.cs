@@ -22,6 +22,7 @@ namespace Cars
     public partial class MainWindow : Window
     {
         public ObservableCollection<Car> cars = new ObservableCollection<Car>();
+        public ObservableCollection<Car> carsFiltered = new ObservableCollection<Car>();
         public MainWindow()
         {
             InitializeComponent();
@@ -31,17 +32,14 @@ namespace Cars
         {
             try
             {
-                int newID = int.Parse(TBNewID.Text);
-                int newYear = int.Parse(TBNewYear.Text);
-                double newCost = double.Parse(TBNewCost.Text);
                 cars.Add(new Car()
                 {
-                    ID = newID,
+                    ID = int.Parse(TBNewID.Text),
                     label = TBNewLabel.Text,
                     model = TBNewModel.Text,
-                    year = newYear,
+                    year = int.Parse(TBNewYear.Text),
                     color = TBNewColor.Text,
-                    cost = newCost,
+                    cost = double.Parse(TBNewCost.Text),
                     regNum = TBNewRegNum.Text
                 });
                 DGcars.ItemsSource = cars;
@@ -66,6 +64,42 @@ namespace Cars
                     DGcars.ItemsSource = cars;
                     break;
                 case 1:
+                    carsFiltered.Clear();
+                    foreach (Car car in cars)
+                    {
+                        if (car.label == TBlabel.Text) carsFiltered.Add(car);
+                    }
+                    DGcars.ItemsSource = carsFiltered;
+                    break;
+                case 2:
+                    carsFiltered.Clear();
+                    try
+                    {
+                        foreach (Car car in cars)
+                        {
+                            if (car.model == TBmodel.Text && DateTime.Now.Year - car.year >= int.Parse(TByears.Text)) carsFiltered.Add(car);
+                        }
+                        DGcars.ItemsSource = carsFiltered;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Неверные данные");
+                    }
+                    break;
+                case 3:
+                    carsFiltered.Clear();
+                    try
+                    {
+                        foreach (Car car in cars)
+                        {
+                            if (car.year == int.Parse(TByear.Text) && int.Parse(TBcost.Text) - car.cost < 0) carsFiltered.Add(car);
+                        }
+                        DGcars.ItemsSource = carsFiltered;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Неверные данные");
+                    }
                     break;
             }
         }
@@ -79,6 +113,5 @@ namespace Cars
         public string color { get; set; }
         public double cost { get; set; }
         public string regNum { get; set; }
-
     }
 }
